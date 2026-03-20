@@ -59,7 +59,7 @@ function FeatureCard({
 export default function FeaturesStarter() {
   return (
     <section
-      className="py-20 px-6 relative"
+      className="py-20 px-6 relative" id="features"
       style={{
         backgroundImage: "url('/photo-1447933601403-0c6688de566e.avif')",
         backgroundSize: 'cover',
@@ -67,7 +67,7 @@ export default function FeaturesStarter() {
         backgroundAttachment: 'fixed',
       }}
     >
-      <div className="absolute inset-0 bg-white/30" />
+      <div className="absolute inset-0 bg-black/20" />
       <div className="relative z-10 max-w-6xl mx-auto">
 
         {/* TITLU SECTIUNE */}
