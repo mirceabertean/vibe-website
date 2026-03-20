@@ -6,6 +6,15 @@
  * Doar HTML + Tailwind CSS = fundația de bază.
  */
 
+'use client';
+
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const top = el.getBoundingClientRect().top + window.scrollY - 80;
+  window.scrollTo({ top, behavior: 'smooth' });
+}
+
 export default function HeroStarter() {
   return (
     <section
@@ -54,20 +63,20 @@ export default function HeroStarter() {
           }}
         >
           {/* Buton primary */}
-          <a
-            href="#meniu"
+          <button
+            onClick={() => scrollToSection('meniu')}
             className="inline-block px-8 py-4 bg-amber-700 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:bg-amber-800 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
           >
             Vezi Meniul
-          </a>
+          </button>
 
           {/* Buton secondary */}
-          <a
-            href="#contact"
+          <button
+            onClick={() => scrollToSection('features')}
             className="inline-block px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
           >
             Vizitează-ne
-          </a>
+          </button>
         </div>
       </div>
 
