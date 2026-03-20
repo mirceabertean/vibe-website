@@ -9,29 +9,50 @@
 export default function HeroStarter() {
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center"
-      style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1920&auto=format&fit=crop')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
     >
+      {/* Video background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/istockphoto-1083268132-640_adpp_is.mp4" type="video/mp4" />
+      </video>
+
       {/* Overlay semi-transparent */}
       <div className="absolute inset-0 bg-black/20" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
         {/* TITLU PRINCIPAL */}
-        <h1 className="text-[3.5rem] md:text-[5.25rem] font-bold mb-6 drop-shadow-[0_4px_16px_rgba(0,0,0,1)]">
+        <h1
+          className="text-6xl sm:text-8xl md:text-9xl font-bold mb-6 drop-shadow-[0_6px_24px_rgba(0,0,0,1)]"
+          style={{
+            animation: 'fadeInUp 0.8s ease-out 0.5s both',
+          }}
+        >
           Simte aroma.<br />Trăiește momentul.
         </h1>
 
         {/* SUBTITLU */}
-        <p className="text-[1.375rem] md:text-[1.75rem] font-bold mb-8 text-white drop-shadow-[0_4px_16px_rgba(0,0,0,1)]">
+        <p
+          className="text-2xl sm:text-3xl md:text-4xl font-bold mb-8 text-white drop-shadow-[0_4px_16px_rgba(0,0,0,1)]"
+          style={{
+            animation: 'fadeInUp 0.8s ease-out 0.8s both',
+          }}
+        >
           Vibe Caffè — unde timpul stă în loc.
         </p>
 
         {/* BUTOANE CTA */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div
+          className="flex flex-col sm:flex-row gap-4 justify-center"
+          style={{
+            animation: 'fadeInUp 0.8s ease-out 1.1s both',
+          }}
+        >
           {/* Buton primary */}
           <a
             href="#meniu"
@@ -53,8 +74,11 @@ export default function HeroStarter() {
       {/* SCROLL INDICATOR */}
       <a
         href="#footer"
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-amber-500 hover:text-amber-400 transition-colors animate-bounce"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white hover:text-white/70 transition-colors animate-bounce"
         aria-label="Scroll în jos"
+        style={{
+          animation: 'fadeInUp 0.8s ease-out 1.5s both, bounce 1s infinite 2.3s',
+        }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +92,23 @@ export default function HeroStarter() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
       </a>
+
+      <style>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes bounce {
+          0%, 100% { transform: translateX(-50%) translateY(0); }
+          50% { transform: translateX(-50%) translateY(-10px); }
+        }
+      `}</style>
     </section>
   );
 }
-
