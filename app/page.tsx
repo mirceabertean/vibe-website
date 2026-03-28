@@ -18,6 +18,7 @@ import FeaturesStarter from '@/components/FeaturesStarter';
 import AboutStarter from '@/components/AboutStarter';
 import MenuStarter from '@/components/MenuStarter';
 import RezervariForm from '@/components/RezervariForm';
+import LocationSection from '@/components/LocationSection';
 import FooterStarter from '@/components/FooterStarter';
 
 /**
@@ -42,6 +43,7 @@ export default function Home() {
       <AboutStarter />
       <MenuStarter />
       <RezervariForm />
+      <LocationSection />
       <FooterStarter />
 
       {/*
