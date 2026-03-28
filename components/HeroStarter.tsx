@@ -65,14 +65,14 @@ export default function HeroStarter() {
           {/* Buton primary */}
           <button
             onClick={() => scrollToSection('meniu')}
-            className="inline-block px-8 py-4 bg-amber-700 text-white font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:bg-amber-800 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
+            className="inline-block px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
           >
             Vezi Meniul
           </button>
 
           {/* Buton secondary */}
           <button
-            onClick={() => scrollToSection('features')}
+            onClick={() => scrollToSection('locatie')}
             className="inline-block px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
           >
             Vizitează-ne
