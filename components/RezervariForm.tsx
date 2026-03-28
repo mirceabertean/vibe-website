@@ -148,18 +148,12 @@ export default function RezervariForm() {
   const monthName = new Date(calendarYear, calendarMonth).toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' });
 
   return (
-    <section id="rezervari" className="relative py-20 px-6">
-      {/* Background imagine */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-fixed"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=1920&auto=format&fit=crop')" }}
-      />
-      <div className="absolute inset-0 bg-slate-900/30" />
-      <div className="relative max-w-2xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-white mb-4 drop-shadow-lg">
+    <section id="rezervari" className="relative py-20 px-6 bg-[#E8DFD5]">
+      <div className="max-w-2xl mx-auto">
+        <h2 className="text-4xl md:text-5xl font-bold text-center text-[#3D2B1F] mb-4">
           Rezervă o masă
         </h2>
-        <p className="text-center text-teal-200 mb-8">
+        <p className="text-center text-[#6B5344] mb-8">
           Completează în 3 pași simpli
         </p>
 
@@ -176,20 +170,20 @@ export default function RezervariForm() {
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
                       step === n
-                        ? 'bg-teal-500 text-white scale-110'
+                        ? 'bg-teal-600 text-white scale-110'
                         : step > n
-                          ? 'bg-green-500 text-white'
-                          : 'bg-white/20 text-white/50'
+                          ? 'bg-green-600 text-white'
+                          : 'bg-[#C4B5A6] text-white/70'
                     }`}
                   >
                     {step > n ? '✓' : n}
                   </div>
-                  <span className="text-xs text-teal-300 mt-1">{label}</span>
+                  <span className="text-xs text-[#6B5344] mt-1">{label}</span>
                 </div>
                 {n < 3 && (
                   <div
                     className={`w-16 h-1 rounded-full transition-all duration-300 mb-5 ${
-                      step > n ? 'bg-green-500' : 'bg-white/20'
+                      step > n ? 'bg-green-600' : 'bg-[#C4B5A6]'
                     }`}
                   />
                 )}
@@ -199,40 +193,40 @@ export default function RezervariForm() {
         )}
 
         {error && (
-          <div className="bg-red-500/20 border border-red-400/30 text-red-200 rounded-2xl p-4 mb-6 text-center">
+          <div className="bg-red-50 border border-red-300 text-red-700 rounded-2xl p-4 mb-6 text-center">
             {error}
           </div>
         )}
 
         {/* Succes */}
         {success ? (
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-lg p-8 sm:p-12 text-center border border-white/20">
+          <div className="bg-white rounded-3xl shadow-lg p-8 sm:p-12 text-center border border-[#D4C5B5]">
             <div className="text-6xl mb-6">🎉</div>
-            <h3 className="text-2xl font-bold text-white mb-4">Rezervare confirmată!</h3>
-            <div className="bg-white/10 rounded-2xl p-6 mb-8 text-left space-y-2">
-              <p className="text-teal-100"><span className="font-semibold text-white">Nume:</span> {formData.nume}</p>
-              <p className="text-teal-100"><span className="font-semibold text-white">Data:</span> {new Date(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
-              <p className="text-teal-100"><span className="font-semibold text-white">Ora:</span> {formData.ora}</p>
-              <p className="text-teal-100"><span className="font-semibold text-white">Persoane:</span> {formData.persoane}</p>
+            <h3 className="text-2xl font-bold text-[#3D2B1F] mb-4">Rezervare confirmată!</h3>
+            <div className="bg-[#F5F0EB] rounded-2xl p-6 mb-8 text-left space-y-2">
+              <p className="text-[#6B5344]"><span className="font-semibold text-[#3D2B1F]">Nume:</span> {formData.nume}</p>
+              <p className="text-[#6B5344]"><span className="font-semibold text-[#3D2B1F]">Data:</span> {new Date(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p className="text-[#6B5344]"><span className="font-semibold text-[#3D2B1F]">Ora:</span> {formData.ora}</p>
+              <p className="text-[#6B5344]"><span className="font-semibold text-[#3D2B1F]">Persoane:</span> {formData.persoane}</p>
             </div>
-            <p className="text-teal-200 mb-8">Te așteptăm cu drag la Vibe Caffè!</p>
+            <p className="text-[#6B5344] mb-8">Te așteptăm cu drag la Vibe Caffè!</p>
             <button
               onClick={resetForm}
-              className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-full transition-all duration-300 hover:scale-105"
+              className="px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-full transition-all duration-300 hover:scale-105"
             >
               Fă o nouă rezervare
             </button>
           </div>
         ) : (
-          <div className="bg-white/10 backdrop-blur-xl rounded-3xl shadow-lg p-5 sm:p-8 border border-white/20">
+          <div className="bg-white rounded-3xl shadow-lg p-5 sm:p-8 border border-[#D4C5B5]">
 
             {/* STEP 1 — Alege data */}
             {step === 1 && (
               <div>
-                <h3 className="text-xl font-bold text-white mb-6">📅 Alege data</h3>
+                <h3 className="text-xl font-bold text-[#3D2B1F] mb-6">📅 Alege data</h3>
 
                 {/* Butoane rapide */}
-                <p className="text-sm font-semibold text-teal-200 mb-3">Următoarele zile:</p>
+                <p className="text-sm font-semibold text-[#6B5344] mb-3">Următoarele zile:</p>
                 <div className="flex gap-2 overflow-x-auto pb-4 mb-6">
                   {getNextDays().map((day) => (
                     <button
@@ -241,11 +235,11 @@ export default function RezervariForm() {
                       onClick={() => selectDate(day.value)}
                       className={`flex-shrink-0 px-4 py-3 rounded-xl border-2 text-center transition-all duration-200 hover:scale-105 hover:shadow-md ${
                         formData.data === day.value
-                          ? 'border-orange-400 bg-orange-400/20'
-                          : 'border-white/20 hover:border-orange-400'
+                          ? 'border-teal-500 bg-teal-50 text-teal-700'
+                          : 'border-[#D4C5B5] hover:border-teal-500 bg-[#F5F0EB]'
                       }`}
                     >
-                      <div className="text-sm font-bold text-white whitespace-nowrap">{day.label}</div>
+                      <div className="text-sm font-bold text-[#3D2B1F] whitespace-nowrap">{day.label}</div>
                       {day.isToday && (
                         <div className="text-xs text-orange-400 font-semibold mt-1">Azi</div>
                       )}
@@ -254,24 +248,24 @@ export default function RezervariForm() {
                 </div>
 
                 {/* Calendar lunar */}
-                <p className="text-sm font-semibold text-teal-200 mb-3">Sau alege din calendar:</p>
-                <div className="border border-white/20 rounded-2xl p-4 bg-white/5">
+                <p className="text-sm font-semibold text-[#6B5344] mb-3">Sau alege din calendar:</p>
+                <div className="border border-[#D4C5B5] rounded-2xl p-4 bg-[#F5F0EB]">
                   {/* Header calendar */}
                   <div className="flex items-center justify-between mb-4">
                     <button
                       type="button"
                       onClick={goToPrevMonth}
                       disabled={!canGoPrev}
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-white/70 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-[#6B5344] hover:bg-[#D4C5B5] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                     >
                       ←
                     </button>
-                    <span className="font-bold text-white capitalize">{monthName}</span>
+                    <span className="font-bold text-[#3D2B1F] capitalize">{monthName}</span>
                     <button
                       type="button"
                       onClick={goToNextMonth}
                       disabled={!canGoNext}
-                      className="w-9 h-9 rounded-full flex items-center justify-center text-white/70 hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      className="w-9 h-9 rounded-full flex items-center justify-center text-[#6B5344] hover:bg-[#D4C5B5] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                     >
                       →
                     </button>
@@ -280,7 +274,7 @@ export default function RezervariForm() {
                   {/* Zilele săptămânii */}
                   <div className="grid grid-cols-7 gap-1 mb-2">
                     {zileSaptamana.map((zi) => (
-                      <div key={zi} className="text-center text-xs font-semibold text-teal-300 py-1">
+                      <div key={zi} className="text-center text-xs font-semibold text-[#6B5344] py-1">
                         {zi}
                       </div>
                     ))}
@@ -308,12 +302,12 @@ export default function RezervariForm() {
                           onClick={() => selectDate(dateStr)}
                           className={`w-full aspect-square rounded-xl flex items-center justify-center text-sm font-medium transition-all duration-200 ${
                             isSelected
-                              ? 'bg-orange-500 text-white font-bold'
+                              ? 'bg-teal-600 text-white font-bold'
                               : isToday
-                                ? 'bg-teal-600/30 text-teal-200 font-bold hover:bg-teal-600/40'
+                                ? 'bg-teal-100 text-teal-700 font-bold hover:bg-teal-200'
                                 : isDisabled
-                                  ? 'text-white/20 cursor-not-allowed'
-                                  : 'text-white/80 hover:bg-white/10'
+                                  ? 'text-[#C4B5A6] cursor-not-allowed'
+                                  : 'text-[#3D2B1F] hover:bg-[#E8DFD5]'
                           }`}
                         >
                           {day.getDate()}
@@ -328,8 +322,8 @@ export default function RezervariForm() {
             {/* STEP 2 — Alege ora */}
             {step === 2 && (
               <div>
-                <h3 className="text-xl font-bold text-white mb-2">⏰ Alege ora</h3>
-                <p className="text-sm text-teal-300 mb-6">
+                <h3 className="text-xl font-bold text-[#3D2B1F] mb-2">⏰ Alege ora</h3>
+                <p className="text-sm text-[#6B5344] mb-6">
                   {new Date(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })}
                 </p>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
@@ -343,8 +337,8 @@ export default function RezervariForm() {
                       }}
                       className={`py-3 px-4 rounded-xl border-2 font-semibold transition-all duration-200 hover:scale-105 hover:shadow-md ${
                         formData.ora === ora
-                          ? 'border-orange-400 bg-orange-400/20 text-orange-400'
-                          : 'border-white/20 text-white/80 hover:border-orange-400'
+                          ? 'border-teal-500 bg-teal-50 text-teal-700'
+                          : 'border-[#D4C5B5] text-[#3D2B1F] hover:border-teal-500 bg-[#F5F0EB]'
                       }`}
                     >
                       {ora}
@@ -354,7 +348,7 @@ export default function RezervariForm() {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="mt-6 text-sm text-teal-300 hover:text-orange-400 transition-colors"
+                  className="mt-6 text-sm text-[#6B5344] hover:text-teal-600 transition-colors"
                 >
                   ← Schimbă data
                 </button>
@@ -364,14 +358,14 @@ export default function RezervariForm() {
             {/* STEP 3 — Detalii */}
             {step === 3 && (
               <form onSubmit={handleSubmit}>
-                <h3 className="text-xl font-bold text-white mb-2">📝 Completează detaliile</h3>
-                <p className="text-sm text-teal-300 mb-6">
+                <h3 className="text-xl font-bold text-[#3D2B1F] mb-2">📝 Completează detaliile</h3>
+                <p className="text-sm text-[#6B5344] mb-6">
                   {new Date(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })} la {formData.ora}
                 </p>
 
                 <div className="space-y-5">
                   <div>
-                    <label htmlFor="nume" className="block text-sm font-semibold text-teal-200 mb-2">
+                    <label htmlFor="nume" className="block text-sm font-semibold text-[#6B5344] mb-2">
                       Nume complet *
                     </label>
                     <input
@@ -382,13 +376,13 @@ export default function RezervariForm() {
                       value={formData.nume}
                       onChange={handleChange}
                       placeholder="Ion Popescu"
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
+                      className="w-full px-4 py-3 bg-[#F5F0EB] border border-[#D4C5B5] rounded-xl text-[#3D2B1F] placeholder-[#A89888] focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label htmlFor="email" className="block text-sm font-semibold text-teal-200 mb-2">
+                      <label htmlFor="email" className="block text-sm font-semibold text-[#6B5344] mb-2">
                         Email *
                       </label>
                       <input
@@ -399,12 +393,12 @@ export default function RezervariForm() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="ion@mail.com"
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
+                        className="w-full px-4 py-3 bg-[#F5F0EB] border border-[#D4C5B5] rounded-xl text-[#3D2B1F] placeholder-[#A89888] focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="telefon" className="block text-sm font-semibold text-teal-200 mb-2">
+                      <label htmlFor="telefon" className="block text-sm font-semibold text-[#6B5344] mb-2">
                         Telefon *
                       </label>
                       <input
@@ -415,13 +409,13 @@ export default function RezervariForm() {
                         value={formData.telefon}
                         onChange={handleChange}
                         placeholder="0721 234 567"
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
+                        className="w-full px-4 py-3 bg-[#F5F0EB] border border-[#D4C5B5] rounded-xl text-[#3D2B1F] placeholder-[#A89888] focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="persoane" className="block text-sm font-semibold text-teal-200 mb-2">
+                    <label htmlFor="persoane" className="block text-sm font-semibold text-[#6B5344] mb-2">
                       Număr persoane
                     </label>
                     <select
@@ -429,10 +423,10 @@ export default function RezervariForm() {
                       name="persoane"
                       value={formData.persoane}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
+                      className="w-full px-4 py-3 bg-[#F5F0EB] border border-[#D4C5B5] rounded-xl text-[#3D2B1F] placeholder-[#A89888] focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
                     >
                       {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => (
-                        <option key={n} value={n} className="bg-[#6b6b6b] text-white">
+                        <option key={n} value={n} className="bg-white text-[#3D2B1F]">
                           {n} {n === 1 ? 'persoană' : 'persoane'}
                         </option>
                       ))}
@@ -442,7 +436,7 @@ export default function RezervariForm() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-4 bg-gray-700 hover:bg-gray-800 text-white font-bold text-lg rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold text-lg rounded-full transition-all duration-300 hover:scale-[1.02] hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {loading ? 'Se trimite...' : 'Confirmă rezervarea'}
                   </button>
@@ -451,7 +445,7 @@ export default function RezervariForm() {
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="mt-4 text-sm text-teal-300 hover:text-orange-400 transition-colors"
+                  className="mt-4 text-sm text-[#6B5344] hover:text-teal-600 transition-colors"
                 >
                   ← Schimbă ora
                 </button>
