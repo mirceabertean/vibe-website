@@ -148,7 +148,7 @@ export default function RezervariForm() {
   const monthName = new Date(calendarYear, calendarMonth).toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' });
 
   return (
-    <section id="rezervari" className="relative py-20 px-6 bg-[#E8DFD5]">
+    <section id="rezervari" className="relative py-20 px-6 bg-[#C9B69C]">
       <div className="max-w-2xl mx-auto">
         <h2 className="text-4xl md:text-5xl font-bold text-center text-[#3D2B1F] mb-4">
           Rezervă o masă
