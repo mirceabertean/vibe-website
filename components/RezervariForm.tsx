@@ -63,6 +63,12 @@ function getCalendarDays(year: number, month: number) {
   return days;
 }
 
+function genereazaCaptcha() {
+  const a = Math.floor(Math.random() * 9) + 1;
+  const b = Math.floor(Math.random() * 9) + 1;
+  return { a, b, raspuns: a + b };
+}
+
 export default function RezervariForm() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -76,6 +82,9 @@ export default function RezervariForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [captcha, setCaptcha] = useState(genereazaCaptcha);
+  const [captchaInput, setCaptchaInput] = useState('');
+  const [honeypot, setHoneypot] = useState('');
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -91,6 +100,13 @@ export default function RezervariForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (honeypot) return; // bot detectat
+    if (parseInt(captchaInput) !== captcha.raspuns) {
+      setError('Răspuns incorect la întrebarea de verificare.');
+      setCaptcha(genereazaCaptcha());
+      setCaptchaInput('');
+      return;
+    }
     setLoading(true);
     setError('');
 
@@ -148,20 +164,6 @@ export default function RezervariForm() {
     }, 50);
   };
 
-  // Următoarele 14 zile (butoane rapide)
-  const getNextDays = () => {
-    const days = [];
-    for (let i = 0; i < 14; i++) {
-      const date = new Date();
-      date.setDate(date.getDate() + i);
-      days.push({
-        value: toLocalDateStr(date),
-        label: date.toLocaleDateString('ro-RO', { weekday: 'short', day: 'numeric', month: 'short' }),
-        isToday: i === 0,
-      });
-    }
-    return days;
-  };
 
   // Navigare calendar
   const canGoPrev = calendarYear > today.getFullYear() || calendarMonth > today.getMonth();
@@ -196,6 +198,26 @@ export default function RezervariForm() {
         <h2 className="text-4xl md:text-5xl font-bold text-center text-[#3D2B1F] mb-4">
           Rezervă o masă
         </h2>
+        <p className="text-center text-[#6B5344] mb-6">Completează în 3 pași simpli</p>
+
+        {/* Progress bar */}
+        {!success && (
+          <div className="flex items-center justify-center gap-2 mb-8">
+            {[{ n: 1, label: 'Data' }, { n: 2, label: 'Ora' }, { n: 3, label: 'Detalii' }].map(({ n, label }) => (
+              <div key={n} className="flex items-center gap-2">
+                <div className="flex flex-col items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                    step === n ? 'bg-teal-600 text-white scale-110' : step > n ? 'bg-green-600 text-white' : 'bg-[#C4B5A6] text-white/70'
+                  }`}>
+                    {step > n ? '✓' : n}
+                  </div>
+                  <span className="text-xs text-[#6B5344] mt-1">{label}</span>
+                </div>
+                {n < 3 && <div className={`w-16 h-1 rounded-full mb-5 transition-all duration-300 ${step > n ? 'bg-green-600' : 'bg-[#C4B5A6]'}`} />}
+              </div>
+            ))}
+          </div>
+        )}
 
         {error && (
           <div className="bg-red-50 border border-red-300 text-red-700 rounded-2xl p-4 mb-6 text-center">
@@ -223,62 +245,12 @@ export default function RezervariForm() {
             </button>
           </div>
         ) : (
-          <div className="bg-white rounded-3xl shadow-lg p-5 sm:p-8 border border-[#D4C5B5]">
+          <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-6 border border-[#D4C5B5]">
 
             {/* STEP 1 — Alege data */}
             {step === 1 && (
               <div>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-[#3D2B1F]">📅 Alege data</h3>
-                  <div className="flex items-center gap-2">
-                    {[
-                      { n: 1, label: 'Data' },
-                      { n: 2, label: 'Ora' },
-                      { n: 3, label: 'Detalii' },
-                    ].map(({ n, label }) => (
-                      <div key={n} className="flex items-center gap-2">
-                        <div className="flex flex-col items-center">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
-                            step === n ? 'bg-teal-600 text-white scale-110' : step > n ? 'bg-green-600 text-white' : 'bg-[#C4B5A6] text-white/70'
-                          }`}>
-                            {step > n ? '✓' : n}
-                          </div>
-                          <span className="text-xs text-[#6B5344] mt-1">{label}</span>
-                        </div>
-                        {n < 3 && (
-                          <div className={`w-10 h-1 rounded-full mb-4 transition-all duration-300 ${step > n ? 'bg-green-600' : 'bg-[#C4B5A6]'}`} />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* Butoane rapide */}
-                <div className="flex items-center justify-between mb-3 -mt-3">
-                  <p className="text-sm font-semibold text-[#6B5344]">Următoarele zile:</p>
-                  <p className="text-sm font-bold text-[#6B5344]">Completează în 3 pași simpli</p>
-                </div>
-                <div className="flex gap-2 overflow-x-auto pb-4 mb-6">
-                  {getNextDays().map((day) => (
-                    <button
-                      key={day.value}
-                      type="button"
-                      onClick={() => selectDate(day.value)}
-                      className={`flex-shrink-0 px-4 py-3 rounded-xl border-2 text-center transition-all duration-200 hover:scale-105 hover:shadow-md ${
-                        formData.data === day.value
-                          ? 'border-teal-500 bg-teal-50 text-teal-700'
-                          : 'border-[#D4C5B5] hover:border-teal-500 bg-[#F5F0EB]'
-                      }`}
-                    >
-                      <div className="text-sm font-bold text-[#3D2B1F] whitespace-nowrap">{day.label}</div>
-                      {day.isToday && (
-                        <div className="text-xs text-orange-400 font-semibold mt-1">Azi</div>
-                      )}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Calendar lunar */}
-                <p className="text-sm font-semibold text-[#6B5344] mb-3">Sau alege din calendar:</p>
+                <h3 className="text-xl font-bold text-[#3D2B1F] mb-4">📅 Alege data</h3>
                 <div className="border border-[#D4C5B5] rounded-2xl p-4 bg-[#F5F0EB]">
                   {/* Header calendar */}
                   <div className="flex items-center justify-between mb-4">
@@ -330,14 +302,14 @@ export default function RezervariForm() {
                           type="button"
                           disabled={isDisabled}
                           onClick={() => selectDate(dateStr)}
-                          className={`w-full aspect-square rounded-xl flex items-center justify-center text-sm font-medium transition-all duration-200 ${
+                          className={`w-full py-2 rounded-xl border-2 flex items-center justify-center text-sm font-bold transition-all duration-200 ${
                             isSelected
-                              ? 'bg-teal-600 text-white font-bold'
+                              ? 'border-teal-600 bg-teal-600 text-white font-bold'
                               : isToday
-                                ? 'bg-teal-100 text-teal-700 font-bold hover:bg-teal-200'
+                                ? 'border-[#D4C5B5] bg-[#F5F0EB] text-teal-600 font-bold hover:border-teal-500'
                                 : isDisabled
-                                  ? 'text-[#C4B5A6] cursor-not-allowed'
-                                  : 'text-[#3D2B1F] hover:bg-[#E8DFD5]'
+                                  ? 'border-[#E8DFD5] text-[#C4B5A6] cursor-not-allowed bg-transparent'
+                                  : 'border-[#D4C5B5] text-[#3D2B1F] hover:border-teal-500 bg-[#F5F0EB]'
                           }`}
                         >
                           {day.getDate()}
@@ -352,26 +324,13 @@ export default function RezervariForm() {
             {/* STEP 2 — Alege ora */}
             {step === 2 && (
               <div>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold text-[#3D2B1F]">⏰ Alege ora</h3>
-                  <div className="flex items-center gap-2">
-                    {[{ n: 1, label: 'Data' }, { n: 2, label: 'Ora' }, { n: 3, label: 'Detalii' }].map(({ n, label }) => (
-                      <div key={n} className="flex items-center gap-2">
-                        <div className="flex flex-col items-center">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${step === n ? 'bg-teal-600 text-white scale-110' : step > n ? 'bg-green-600 text-white' : 'bg-[#C4B5A6] text-white/70'}`}>
-                            {step > n ? '✓' : n}
-                          </div>
-                          <span className="text-xs text-[#6B5344] mt-1">{label}</span>
-                        </div>
-                        {n < 3 && <div className={`w-10 h-1 rounded-full mb-4 transition-all duration-300 ${step > n ? 'bg-green-600' : 'bg-[#C4B5A6]'}`} />}
-                      </div>
-                    ))}
-                  </div>
+                  <p className="text-sm text-[#6B5344]">
+                    {parseDataLocala(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })}
+                  </p>
                 </div>
-                <p className="text-sm text-[#6B5344] mb-6">
-                  {parseDataLocala(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })}
-                </p>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-h-72 overflow-y-auto pr-1">
+                <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-2">
                   {getOreDisponibile(formData.data).map((ora: string) => (
                     <button
                       key={ora}
@@ -380,7 +339,7 @@ export default function RezervariForm() {
                         setFormData({ ...formData, ora });
                         setStep(3);
                       }}
-                      className={`py-3 px-4 rounded-xl border-2 font-semibold transition-all duration-200 hover:scale-105 hover:shadow-md ${
+                      className={`py-2 px-2 rounded-xl border-2 text-sm font-semibold transition-all duration-200 hover:scale-105 hover:shadow-md ${
                         formData.ora === ora
                           ? 'border-teal-500 bg-teal-50 text-teal-700'
                           : 'border-[#D4C5B5] text-[#3D2B1F] hover:border-teal-500 bg-[#F5F0EB]'
@@ -403,22 +362,7 @@ export default function RezervariForm() {
             {/* STEP 3 — Detalii */}
             {step === 3 && (
               <form onSubmit={handleSubmit}>
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-xl font-bold text-[#3D2B1F]">📝 Completează detaliile</h3>
-                  <div className="flex items-center gap-2">
-                    {[{ n: 1, label: 'Data' }, { n: 2, label: 'Ora' }, { n: 3, label: 'Detalii' }].map(({ n, label }) => (
-                      <div key={n} className="flex items-center gap-2">
-                        <div className="flex flex-col items-center">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${step === n ? 'bg-teal-600 text-white scale-110' : step > n ? 'bg-green-600 text-white' : 'bg-[#C4B5A6] text-white/70'}`}>
-                            {step > n ? '✓' : n}
-                          </div>
-                          <span className="text-xs text-[#6B5344] mt-1">{label}</span>
-                        </div>
-                        {n < 3 && <div className={`w-10 h-1 rounded-full mb-4 transition-all duration-300 ${step > n ? 'bg-green-600' : 'bg-[#C4B5A6]'}`} />}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <h3 className="text-xl font-bold text-[#3D2B1F] mb-2">📝 Completează detaliile</h3>
                 <p className="text-sm text-[#6B5344] mb-6">
                   {parseDataLocala(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })} la {formData.ora}
                 </p>
@@ -491,6 +435,32 @@ export default function RezervariForm() {
                         </option>
                       ))}
                     </select>
+                  </div>
+
+                  {/* Honeypot — ascuns pentru utilizatori, vizibil pentru boți */}
+                  <input
+                    type="text"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    className="hidden"
+                  />
+
+                  {/* Captcha */}
+                  <div>
+                    <label className="block text-sm font-semibold text-[#6B5344] mb-2">
+                      Verificare: cât face {captcha.a} + {captcha.b}? *
+                    </label>
+                    <input
+                      type="number"
+                      value={captchaInput}
+                      onChange={(e) => setCaptchaInput(e.target.value)}
+                      placeholder="Răspuns"
+                      required
+                      className="w-32 px-4 py-3 bg-[#F5F0EB] border border-[#D4C5B5] rounded-xl text-[#3D2B1F] placeholder-[#A89888] focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-all"
+                    />
                   </div>
 
                   <button

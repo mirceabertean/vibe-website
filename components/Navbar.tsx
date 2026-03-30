@@ -20,7 +20,7 @@ export default function Navbar() {
           : 'bg-[#2A1F17]/90 backdrop-blur-md'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
         {/* Logo */}
         <a
           href="#"
