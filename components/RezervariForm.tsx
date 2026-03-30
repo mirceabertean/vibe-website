@@ -2,12 +2,44 @@
 
 import { useState } from 'react';
 
-const oreDisponibile = [
-  '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
-  '13:00', '13:30', '14:00', '14:30', '15:00', '15:30',
-  '16:00', '16:30', '17:00', '17:30', '18:00', '18:30',
-  '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00',
-];
+function genereazaOre(start: number, closeHour: number): string[] {
+  const ore: string[] = [];
+  for (let h = start; h < closeHour; h++) {
+    ore.push(`${String(h).padStart(2, '0')}:00`);
+    ore.push(`${String(h).padStart(2, '0')}:30`);
+  }
+  return ore;
+}
+
+function getOreDisponibile(dateStr: string): string[] {
+  if (!dateStr) return genereazaOre(7, 21);
+  const data = parseDataLocala(dateStr);
+  const zi = data.getDay();
+  const esteWeekend = zi === 0 || zi === 6;
+  const ore = esteWeekend ? genereazaOre(8, 22) : genereazaOre(7, 21);
+
+  const now = new Date();
+  const esteAzi = dateStr === toLocalDateStr(now);
+  if (!esteAzi) return ore;
+
+  const minuteAcum = now.getHours() * 60 + now.getMinutes();
+  return ore.filter((ora) => {
+    const [h, m] = ora.split(':').map(Number);
+    return h * 60 + m > minuteAcum;
+  });
+}
+
+function parseDataLocala(dateStr: string): Date {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function toLocalDateStr(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
 
 const zileSaptamana = ['Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ', 'Du'];
 
@@ -63,7 +95,11 @@ export default function RezervariForm() {
     setError('');
 
     try {
-      const data_ora = `${formData.data}T${formData.ora}:00`;
+      const offset = -new Date().getTimezoneOffset();
+      const semn = offset >= 0 ? '+' : '-';
+      const ore = String(Math.floor(Math.abs(offset) / 60)).padStart(2, '0');
+      const minute = String(Math.abs(offset) % 60).padStart(2, '0');
+      const data_ora = `${formData.data}T${formData.ora}:00${semn}${ore}:${minute}`;
 
       const res = await fetch('/api/rezervari', {
         method: 'POST',
@@ -103,6 +139,13 @@ export default function RezervariForm() {
   const selectDate = (dateStr: string) => {
     setFormData({ ...formData, data: dateStr });
     setStep(2);
+    setTimeout(() => {
+      const el = document.getElementById('rezervari');
+      if (el) {
+        const y = el.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }, 50);
   };
 
   // Următoarele 14 zile (butoane rapide)
@@ -112,7 +155,7 @@ export default function RezervariForm() {
       const date = new Date();
       date.setDate(date.getDate() + i);
       days.push({
-        value: date.toISOString().split('T')[0],
+        value: toLocalDateStr(date),
         label: date.toLocaleDateString('ro-RO', { weekday: 'short', day: 'numeric', month: 'short' }),
         isToday: i === 0,
       });
@@ -153,44 +196,6 @@ export default function RezervariForm() {
         <h2 className="text-4xl md:text-5xl font-bold text-center text-[#3D2B1F] mb-4">
           Rezervă o masă
         </h2>
-        <p className="text-center text-[#6B5344] mb-8">
-          Completează în 3 pași simpli
-        </p>
-
-        {/* Progress bar */}
-        {!success && (
-          <div className="flex items-center justify-center gap-2 mb-12">
-            {[
-              { n: 1, label: 'Data' },
-              { n: 2, label: 'Ora' },
-              { n: 3, label: 'Detalii' },
-            ].map(({ n, label }) => (
-              <div key={n} className="flex items-center gap-2">
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
-                      step === n
-                        ? 'bg-teal-600 text-white scale-110'
-                        : step > n
-                          ? 'bg-green-600 text-white'
-                          : 'bg-[#C4B5A6] text-white/70'
-                    }`}
-                  >
-                    {step > n ? '✓' : n}
-                  </div>
-                  <span className="text-xs text-[#6B5344] mt-1">{label}</span>
-                </div>
-                {n < 3 && (
-                  <div
-                    className={`w-16 h-1 rounded-full transition-all duration-300 mb-5 ${
-                      step > n ? 'bg-green-600' : 'bg-[#C4B5A6]'
-                    }`}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-        )}
 
         {error && (
           <div className="bg-red-50 border border-red-300 text-red-700 rounded-2xl p-4 mb-6 text-center">
@@ -205,7 +210,7 @@ export default function RezervariForm() {
             <h3 className="text-2xl font-bold text-[#3D2B1F] mb-4">Rezervare confirmată!</h3>
             <div className="bg-[#F5F0EB] rounded-2xl p-6 mb-8 text-left space-y-2">
               <p className="text-[#6B5344]"><span className="font-semibold text-[#3D2B1F]">Nume:</span> {formData.nume}</p>
-              <p className="text-[#6B5344]"><span className="font-semibold text-[#3D2B1F]">Data:</span> {new Date(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+              <p className="text-[#6B5344]"><span className="font-semibold text-[#3D2B1F]">Data:</span> {parseDataLocala(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
               <p className="text-[#6B5344]"><span className="font-semibold text-[#3D2B1F]">Ora:</span> {formData.ora}</p>
               <p className="text-[#6B5344]"><span className="font-semibold text-[#3D2B1F]">Persoane:</span> {formData.persoane}</p>
             </div>
@@ -223,10 +228,35 @@ export default function RezervariForm() {
             {/* STEP 1 — Alege data */}
             {step === 1 && (
               <div>
-                <h3 className="text-xl font-bold text-[#3D2B1F] mb-6">📅 Alege data</h3>
-
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-[#3D2B1F]">📅 Alege data</h3>
+                  <div className="flex items-center gap-2">
+                    {[
+                      { n: 1, label: 'Data' },
+                      { n: 2, label: 'Ora' },
+                      { n: 3, label: 'Detalii' },
+                    ].map(({ n, label }) => (
+                      <div key={n} className="flex items-center gap-2">
+                        <div className="flex flex-col items-center">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                            step === n ? 'bg-teal-600 text-white scale-110' : step > n ? 'bg-green-600 text-white' : 'bg-[#C4B5A6] text-white/70'
+                          }`}>
+                            {step > n ? '✓' : n}
+                          </div>
+                          <span className="text-xs text-[#6B5344] mt-1">{label}</span>
+                        </div>
+                        {n < 3 && (
+                          <div className={`w-10 h-1 rounded-full mb-4 transition-all duration-300 ${step > n ? 'bg-green-600' : 'bg-[#C4B5A6]'}`} />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 {/* Butoane rapide */}
-                <p className="text-sm font-semibold text-[#6B5344] mb-3">Următoarele zile:</p>
+                <div className="flex items-center justify-between mb-3 -mt-3">
+                  <p className="text-sm font-semibold text-[#6B5344]">Următoarele zile:</p>
+                  <p className="text-sm font-bold text-[#6B5344]">Completează în 3 pași simpli</p>
+                </div>
                 <div className="flex gap-2 overflow-x-auto pb-4 mb-6">
                   {getNextDays().map((day) => (
                     <button
@@ -287,12 +317,12 @@ export default function RezervariForm() {
                         return <div key={`empty-${i}`} />;
                       }
 
-                      const dateStr = day.toISOString().split('T')[0];
+                      const dateStr = toLocalDateStr(day);
                       const isPast = day < today;
                       const isTooFar = day > maxDate;
                       const isDisabled = isPast || isTooFar;
                       const isSelected = formData.data === dateStr;
-                      const isToday = dateStr === today.toISOString().split('T')[0];
+                      const isToday = dateStr === toLocalDateStr(today);
 
                       return (
                         <button
@@ -322,12 +352,27 @@ export default function RezervariForm() {
             {/* STEP 2 — Alege ora */}
             {step === 2 && (
               <div>
-                <h3 className="text-xl font-bold text-[#3D2B1F] mb-2">⏰ Alege ora</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-xl font-bold text-[#3D2B1F]">⏰ Alege ora</h3>
+                  <div className="flex items-center gap-2">
+                    {[{ n: 1, label: 'Data' }, { n: 2, label: 'Ora' }, { n: 3, label: 'Detalii' }].map(({ n, label }) => (
+                      <div key={n} className="flex items-center gap-2">
+                        <div className="flex flex-col items-center">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${step === n ? 'bg-teal-600 text-white scale-110' : step > n ? 'bg-green-600 text-white' : 'bg-[#C4B5A6] text-white/70'}`}>
+                            {step > n ? '✓' : n}
+                          </div>
+                          <span className="text-xs text-[#6B5344] mt-1">{label}</span>
+                        </div>
+                        {n < 3 && <div className={`w-10 h-1 rounded-full mb-4 transition-all duration-300 ${step > n ? 'bg-green-600' : 'bg-[#C4B5A6]'}`} />}
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <p className="text-sm text-[#6B5344] mb-6">
-                  {new Date(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })}
+                  {parseDataLocala(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })}
                 </p>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
-                  {oreDisponibile.map((ora) => (
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-h-72 overflow-y-auto pr-1">
+                  {getOreDisponibile(formData.data).map((ora: string) => (
                     <button
                       key={ora}
                       type="button"
@@ -358,9 +403,24 @@ export default function RezervariForm() {
             {/* STEP 3 — Detalii */}
             {step === 3 && (
               <form onSubmit={handleSubmit}>
-                <h3 className="text-xl font-bold text-[#3D2B1F] mb-2">📝 Completează detaliile</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-xl font-bold text-[#3D2B1F]">📝 Completează detaliile</h3>
+                  <div className="flex items-center gap-2">
+                    {[{ n: 1, label: 'Data' }, { n: 2, label: 'Ora' }, { n: 3, label: 'Detalii' }].map(({ n, label }) => (
+                      <div key={n} className="flex items-center gap-2">
+                        <div className="flex flex-col items-center">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${step === n ? 'bg-teal-600 text-white scale-110' : step > n ? 'bg-green-600 text-white' : 'bg-[#C4B5A6] text-white/70'}`}>
+                            {step > n ? '✓' : n}
+                          </div>
+                          <span className="text-xs text-[#6B5344] mt-1">{label}</span>
+                        </div>
+                        {n < 3 && <div className={`w-10 h-1 rounded-full mb-4 transition-all duration-300 ${step > n ? 'bg-green-600' : 'bg-[#C4B5A6]'}`} />}
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <p className="text-sm text-[#6B5344] mb-6">
-                  {new Date(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })} la {formData.ora}
+                  {parseDataLocala(formData.data).toLocaleDateString('ro-RO', { weekday: 'long', day: 'numeric', month: 'long' })} la {formData.ora}
                 </p>
 
                 <div className="space-y-5">
