@@ -1,0 +1,12 @@
+# Normalizează line endings la LF pentru toate fișierele text
+* text=auto eol=lf
+
+# Fișiere binare — fără conversie
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mp4 binary
+*.woff binary
+*.woff2 binary
