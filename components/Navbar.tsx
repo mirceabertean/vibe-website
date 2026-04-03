@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -23,10 +25,12 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 py-2 flex items-center justify-between">
         {/* Logo */}
         <a
-          href="#"
+          href="/"
           onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (pathname === '/') {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
           }}
           className="hover:text-white transition-colors"
         >
@@ -49,6 +53,12 @@ export default function Navbar() {
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           </a>
           <div className="w-px h-6 bg-[#D4C5B5]/30 mx-1" />
+          <a
+            href="/rezervari"
+            className="flex items-center gap-2 px-5 py-2.5 bg-teal-500 hover:bg-teal-600 rounded-full text-white transition-all duration-300 hover:scale-105"
+          >
+            <span className="text-sm font-semibold">Rezervă o masă</span>
+          </a>
           <a
             href="tel:+40740000000"
             className="flex items-center gap-2 px-5 py-2.5 border border-[#D4C5B5] rounded-full text-[#F5F0EB] hover:bg-[#F5F0EB] hover:text-[#2A1F17] transition-all duration-300"
@@ -94,6 +104,12 @@ export default function Navbar() {
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
               </a>
             </div>
+            <a
+              href="/rezervari"
+              className="flex items-center gap-2 px-5 py-2.5 bg-teal-500 hover:bg-teal-600 rounded-full text-white transition-all duration-300 w-fit"
+            >
+              <span className="text-sm font-semibold">Rezervă o masă</span>
+            </a>
             <a
               href="tel:+40740000000"
               className="flex items-center gap-2 px-5 py-2.5 border border-[#D4C5B5] rounded-full text-[#F5F0EB] hover:bg-[#F5F0EB] hover:text-[#2A1F17] transition-all duration-300 w-fit"
