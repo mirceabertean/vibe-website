@@ -13,15 +13,21 @@
 - [x] Pagina de administrare rezervări
 - [x] Deploy pe Vercel
 - [x] .gitattributes pentru normalizarea line endings (LF)
+- [x] Secțiunea Recenzii (TestimonialeSection) cu 6 carduri, rating sumar, animații scroll
+- [x] Pagina /recenzii — formular "Lasă o recenzie" cu star picker, salvare Supabase
+- [x] Pagina /rezervari — RezervariForm mutat pe pagină dedicată
+- [x] Navbar: buton "Rezervă o masă" → /rezervari, logo → scroll la hero sau / dacă pe altă pagină
+- [x] Hero: buton Rezervări → /rezervari (în loc de scroll anchor)
 
 ## În lucru
 - [ ] —
 
 ## TODO viitor
-- [ ] Secțiunea Meniu (categorii + produse cu poze)
+- [ ] Secțiunea Meniu (categorii + produse cu poze) — produsele există, rămâne de stilizat secțiunea final
 - [ ] Sistem notificări rezervări (email/SMS la confirmare)
 - [ ] Pagină de confirmare rezervare după submit
 - [ ] SEO: meta tags, OG image, sitemap
 - [ ] Galerie foto (atmosferă cafenea)
-- [ ] Testimoniale / recenzii clienți
 - [ ] Integrare Google Maps (opțional, față de OpenStreetMap)
+- [ ] Pagina admin: moderare recenzii (aprobare/respingere din tabelul Supabase)
+- [ ] Recenzii dinamice: TestimonialeSection să încarce recenzii aprobate din Supabase
