@@ -1,5 +1,50 @@
 # Session Log
 
+## [2026-04-15] — AI Barista Bot „Maestrul Înțelept"
+
+### Ce s-a făcut
+- Creat `lib/menu-data.ts` — sursă unică de adevăr pentru meniu (38 produse cu ingrediente, vegan flag, imagini)
+- Creat `lib/knowledge-base.ts` — generat dinamic din menu-data (categorii, meniu complet, recomandări)
+- Refactorizat `components/MenuStarter.tsx` să importe din lib/menu-data (eliminat duplicarea de date)
+- Creat `app/api/chat/route.ts` — endpoint streaming Claude (claude-sonnet-4-5-20250929, max 200 tokens)
+  - System prompt cu personalitate „Maestrul Înțelept" (barista filosof, calm, enigmatic)
+  - Guardrails: nu inventează produse, nu vorbește off-topic, română obligatorie
+  - Ora locală injectată din client pentru salutări contextuale
+  - Status deschis/închis calculat server-side (fix pentru erori de raționament AI)
+  - Link-uri acțiuni în răspunsuri (rezervări, meniu, recenzii)
+- Creat `components/ChatWidget.tsx` — widget complet cu:
+  - Buton flotant cu animație pulse + badge mesaje necitite
+  - Streaming răspuns caracter cu caracter
+  - Typing indicator (3 puncte animate)
+  - Quick replies inițiale + sugestii contextuale după fiecare răspuns
+  - CTA butoane detectate automat din răspuns
+  - Render markdown links clickabile
+  - Persistență conversație în localStorage
+  - Animație slide-up la deschidere, mobile full-screen
+  - Design cafeniu (#3D2314 / #2C1508)
+- Adăugat ChatWidget în `app/layout.tsx` (vizibil pe toate paginile)
+- Deploy pe Vercel cu ANTHROPIC_API_KEY setat
+
+### Ce rămâne
+- [ ] Stilizare finală secțiune Meniu (layout, animații)
+- [ ] Sistem notificări rezervări (email/SMS)
+- [ ] Pagină confirmare rezervare după submit
+- [ ] SEO: meta tags, OG image, sitemap
+- [ ] Recenzii dinamice din Supabase
+- [ ] Pagina admin: moderare recenzii
+- [ ] Chatbot: răspunsuri în engleză dacă userul scrie în engleză
+
+### Commits
+- `c3f6237` feat: add AI Barista Bot chatbot (Maestrul) with full knowledge base
+- `78be965` fix: compute open/closed status server-side to prevent AI schedule errors
+
+### Decizii importante
+- Single source of truth: menu-data.ts e importat atât de MenuStarter cât și de knowledge-base — orice modificare se propagă automat
+- Schedule computation server-side: AI-ul nu e de încredere pentru calcule aritmetice cu ore — serverul calculează statusul exact și îl injectează gata calculat
+- Culoarea chatbot-ului: #3D2314 (espresso dark) — ales după feedback „e cam deschis" de 2 ori
+
+---
+
 ## [2026-04-14] — Extindere meniu cu produse noi
 
 ### Ce s-a făcut
