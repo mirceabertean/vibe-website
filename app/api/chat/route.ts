@@ -37,17 +37,48 @@ Folosește link-urile cu moderație — doar când userul exprimă o intenție c
 
 === ORA ȘI STAREA CAFENELEI ===
 
-Folosește ora locală a clientului (furnizată mai jos) pentru:
+Ora și starea cafenelei sunt calculate și furnizate la finalul acestui prompt — nu le calcula tu.
+Folosește-le pentru:
 - Salutări contextuale: "Bună dimineața" (07:00–12:00), "Bună ziua" (12:00–18:00), "Bună seara" (18:00–22:00)
-- Să știi dacă cafeneaua este deschisă sau închisă în acel moment
-  Program: Luni–Vineri 07:00–21:00, Sâmbătă–Duminică 08:00–22:00
+- Să comunici corect dacă suntem deschiși sau închiși (folosește EXACT statusul furnizat)
 - Să recomanzi băuturi potrivite orei: dimineața → espresso, după-amiaza → specialty, seara → ceva relaxant
-- Dacă e închis, spune când se redeschide
 `;
 
+function getOpenStatus(localTime: string, localDay: string): string {
+  const [hourStr, minStr] = localTime.split(':');
+  const hour = parseInt(hourStr, 10);
+  const min = parseInt(minStr, 10);
+  if (isNaN(hour) || isNaN(min)) return 'necunoscută';
+
+  const totalMins = hour * 60 + min;
+  const day = localDay.toLowerCase();
+  const isWeekend = day.includes('sâmbătă') || day.includes('duminică');
+
+  const openMins  = isWeekend ? 8 * 60  : 7 * 60;   // 480 sau 420
+  const closeMins = isWeekend ? 22 * 60 : 21 * 60;   // 1320 sau 1260
+  const closeStr  = isWeekend ? '22:00' : '21:00';
+  const openStr   = isWeekend ? '08:00' : '07:00';
+
+  if (totalMins >= openMins && totalMins < closeMins) {
+    const minsLeft = closeMins - totalMins;
+    if (minsLeft <= 60) {
+      return `DESCHIS — se închide în ${minsLeft} minute (la ${closeStr}). Atenționează clientul că timpul e limitat.`;
+    }
+    return `DESCHIS`;
+  }
+
+  if (totalMins < openMins) {
+    return `ÎNCHIS — se deschide azi la ${openStr}`;
+  }
+
+  return `ÎNCHIS — s-a închis la ${closeStr}. Se redeschide mâine la ${isWeekend ? '07:00' : openStr}`;
+}
+
 function buildSystemPrompt(localTime: string, localDay: string): string {
+  const status = getOpenStatus(localTime, localDay);
   return `${BASE_SYSTEM_PROMPT}
-Ora locală a clientului acum: ${localTime}, ${localDay}
+Ora locală a clientului: ${localTime}, ${localDay}
+Starea cafenelei ACUM: ${status}
 `;
 }
 
