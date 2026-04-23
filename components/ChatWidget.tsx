@@ -13,7 +13,7 @@ const MAX_STORED = 20;
 
 const INITIAL_MESSAGE: Message = {
   role: 'assistant',
-  content: 'Bine ai venit la Vibe Caffè. Eu sunt Maestrul. Ce îți dorești să știi?',
+  content: 'Bună! Ce pot să-ți pregătesc azi de la Vibe Caffè?',
   time: '',
 };
 
@@ -21,7 +21,7 @@ function getTime(): string {
   return new Date().toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit', hour12: false });
 }
 
-const INITIAL_QUICK_REPLIES = ['Vezi meniu', 'Recomandări', 'Rezervări', 'Program'];
+const INITIAL_QUICK_REPLIES = ['Ce mai e bun?', 'Surprinde-mă', 'Vreau să rezerv', 'Când sunteți deschis?'];
 
 function renderContent(text: string): React.ReactNode {
   const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -60,25 +60,25 @@ function getContextualSuggestions(lastBotMsg: string): string[] {
     msg.includes('cafea') || msg.includes('meniu') || msg.includes('specialty') ||
     msg.includes('recomand')
   ) {
-    return ['Opțiuni vegane', 'Deserturi', 'Cafea rece'];
+    return ['Ceva vegan?', 'Ce dulce mai aveți?', 'Ceva rece?'];
   }
   if (msg.includes('rezerv')) {
-    return ['Fă o rezervare', 'Program'];
+    return ['Vreau să rezerv', 'Câte locuri aveți?'];
   }
   if (msg.includes('vegan') || msg.includes('ovăz') || msg.includes('plant')) {
-    return ['Cafea rece vegană', 'Cel mai ieftin vegan', 'Deserturi'];
+    return ['Cel mai bun vegan', 'Ceva rece vegan', 'Ce dulce mai aveți?'];
   }
   if (
     msg.includes('dulce') || msg.includes('patiserie') || msg.includes('croissant') ||
     msg.includes('brownie') || msg.includes('cheesecake') || msg.includes('ecler')
   ) {
-    return ['Opțiuni vegane', 'Cafea rece', 'Recomandări'];
+    return ['Ceva vegan?', 'Ceva rece?', 'Surprinde-mă'];
   }
   if (msg.includes('program') || msg.includes('deschis') || msg.includes('închis') || msg.includes('orar')) {
-    return ['Unde vă găsim?', 'Fă o rezervare'];
+    return ['Unde vă găsim?', 'Vreau să rezerv'];
   }
 
-  return ['Vezi meniu', 'Recomandări', 'Rezervări'];
+  return ['Ce mai e bun?', 'Surprinde-mă', 'Vreau să rezerv'];
 }
 
 interface CtaAction {
@@ -259,7 +259,7 @@ export default function ChatWidget() {
     } catch {
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Ups, ceva nu a mers. Încearcă din nou.',
+        content: 'Nu am putut răspunde acum. Mai încearcă o dată sau sună-ne la 0740 000 000.',
         time: getTime(),
       }]);
       setLoading(false);
@@ -316,13 +316,13 @@ export default function ChatWidget() {
           {/* Header */}
           <div className="bg-[#3D2314] px-5 py-4 flex items-center gap-3 flex-shrink-0">
             <div className="w-9 h-9 rounded-full bg-[#2C1508] flex items-center justify-center text-lg flex-shrink-0">
-              🧙
+              ☕
             </div>
             <div className="flex-1 min-w-0">
               <p className="font-bold text-white text-sm" style={{ fontFamily: 'var(--font-heading)' }}>
-                Maestrul — Barista Bot
+                Barista Vibe Caffè
               </p>
-              <p className="text-white/70 text-xs">Vibe Caffè</p>
+              <p className="text-white/70 text-xs">Întreabă-mă orice</p>
             </div>
             <button
               onClick={handleReset}
@@ -354,7 +354,7 @@ export default function ChatWidget() {
               >
                 {msg.role === 'assistant' && (
                   <div className="w-6 h-6 rounded-full bg-[#F5EDE6] flex items-center justify-center text-xs flex-shrink-0 mb-4">
-                    🧙
+                    ☕
                   </div>
                 )}
 
@@ -401,7 +401,7 @@ export default function ChatWidget() {
             {loading && (
               <div className="flex items-end gap-2 justify-start">
                 <div className="w-6 h-6 rounded-full bg-[#F5EDE6] flex items-center justify-center text-xs flex-shrink-0">
-                  🧙
+                  ☕
                 </div>
                 <div className="bg-white border border-gray-100 shadow-sm px-4 py-3 rounded-2xl rounded-bl-sm">
                   <div className="flex gap-1 items-center">
