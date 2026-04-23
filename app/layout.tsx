@@ -26,12 +26,12 @@ const inter = Inter({
  * Pentru cursanți: Metadata = informații pentru Google și social media
  */
 export const metadata: Metadata = {
-  title: "Vibe Coffee - Cafea de Specialitate în București",
-  description: "Descoperă aromele autentice ale cafelei de specialitate într-un ambient modern și prietenos. Boabe proaspăt prăjite, bariști experimentați, WiFi gratuit.",
-  keywords: ["cafenea bucuresti", "cafea specialitate", "coffee shop", "vibe coffee"],
-  authors: [{ name: "Vibe Coffee Team" }],
+  title: "Vibe Caffè - Cafea de Specialitate în Cluj",
+  description: "Descoperă aromele autentice ale cafelei de specialitate într-un ambient de campus modern și prietenos. Boabe proaspăt prăjite, bariști experimentați, WiFi gratuit.",
+  keywords: ["cafenea cluj", "cafea specialitate", "coffee shop", "vibe caffe", "cafenea campus"],
+  authors: [{ name: "Vibe Caffè" }],
   openGraph: {
-    title: "Vibe Coffee - Cafea de Specialitate",
+    title: "Vibe Caffè - Cafea de Specialitate",
     description: "Locul perfect pentru cafeaua ta zilnică",
     type: "website",
     locale: "ro_RO",
