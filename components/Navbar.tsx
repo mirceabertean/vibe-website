@@ -34,8 +34,8 @@ export default function Navbar() {
           }}
           className="hover:text-white transition-colors"
         >
-          <span className="text-xl font-bold text-[#F5F0EB] tracking-tight">Vibe Coffee</span>
-          <span className="hidden sm:inline text-sm text-white ml-3 font-bold">O atmosferă tinerească</span>
+          <span className="text-xl font-bold text-[#F5F0EB] tracking-tight">Vibe Caffè</span>
+          <span className="hidden sm:inline text-sm text-white ml-3 font-bold">Cafeaua ta de campus</span>
         </a>
 
         {/* Telefon + Social - desktop */}

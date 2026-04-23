@@ -24,7 +24,7 @@ export default function MenuStarter() {
 
         {/* TITLU */}
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-white mb-4 drop-shadow-[0_6px_24px_rgba(0,0,0,1)]">Meniul Nostru</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-[0_6px_24px_rgba(0,0,0,1)]">Meniul Nostru</h2>
           <p className="text-xl font-bold text-white drop-shadow-[0_4px_16px_rgba(0,0,0,1)]">Preparate cu pasiune, servite cu zâmbet</p>
         </div>
 

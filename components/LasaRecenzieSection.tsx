@@ -105,7 +105,7 @@ export default function LasaRecenzieSection() {
           Lasă o recenzie
         </h2>
         <p className="text-center text-[#6B5344] mb-10">
-          Experiența ta ne ajută să ne îmbunătățim și îi ajută pe alți studenți să ne descopere.
+          Spune-ne cum a fost. Ajuți și alți studenți să ne descopere.
         </p>
 
         {error && (

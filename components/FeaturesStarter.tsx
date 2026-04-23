@@ -47,7 +47,7 @@ function FeatureCard({
       </div>
 
       {/* Text jos — 60% înălțime */}
-      <div className="p-8">
+      <div className="p-5 md:p-8">
         <div className="text-4xl mb-4">{emoji}</div>
         <h3 className="text-2xl font-bold text-gray-900 mb-3">{title}</h3>
         <p className="text-gray-600 leading-relaxed">{description}</p>
@@ -72,11 +72,11 @@ export default function FeaturesStarter() {
 
         {/* TITLU SECTIUNE */}
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-white mb-4">
-            De ce Vibe Coffee?
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+            De ce Vibe Caffè?
           </h2>
           <p className="text-xl text-white font-bold">
-            Experiență unică, ingrediente premium, atmosferă perfectă
+            Boabe de specialitate. Patiserie artizanală. Atmosferă de campus.
           </p>
         </div>
 
@@ -89,7 +89,7 @@ export default function FeaturesStarter() {
               image="https://images.unsplash.com/photo-1541167760496-1628856ab772?w=800&auto=format&fit=crop"
               emoji="☕"
               title="Cafea de Specialitate"
-              description="Boabe selectate din cele mai bune regiuni ale lumii, prăjite artizanal și preparate cu pasiune de baristele noștri. Fiecare ceașcă e o experiență unică."
+              description="Boabe de specialitate din întreaga lume, prăjite artizanal și preparate de baristele noștri. Fiecare ceașcă — o experiență aparte."
               delay={0}
             />
           </div>
@@ -107,8 +107,8 @@ export default function FeaturesStarter() {
           <FeatureCard
             image="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&auto=format&fit=crop"
             emoji="🎵"
-            title="Ambient Relaxant"
-            description="Muzică atent selectată, lumină caldă și scaune confortabile — locul perfect pentru studiu sau o pauză bine meritată."
+            title="Spațiu de Lucru"
+            description="WiFi rapid, prize la fiecare masă și muzică ambientală — locul ideal pentru studiu sau o pauză bine meritată."
             delay={400}
           />
 

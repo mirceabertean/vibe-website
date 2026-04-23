@@ -67,7 +67,7 @@ export default function HeroStarter() {
             onClick={() => scrollToSection('meniu')}
             className="inline-block px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
           >
-            Vezi Meniul
+            Descoperă Meniul
           </button>
 
           {/* Buton secondary */}
@@ -83,7 +83,7 @@ export default function HeroStarter() {
             href="/rezervari"
             className="inline-block px-8 py-4 bg-transparent text-white font-semibold rounded-full border-2 border-white transition-all duration-300 hover:scale-105 hover:bg-white/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.4)]"
           >
-            Rezervări
+            Rezervă o masă
           </a>
         </div>
       </div>

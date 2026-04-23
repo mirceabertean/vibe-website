@@ -27,18 +27,18 @@ export default function AboutStarter() {
     <section className="py-20 px-6 bg-white" id="despre">
       <div className="max-w-6xl mx-auto">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
 
           {/* Imagine — slide din stânga */}
           <div
             ref={imgRef}
-            className="relative transition-all duration-1000 ease-out"
+            className="relative transition-all duration-1000 ease-out mb-10 md:mb-0"
             style={{
               opacity: imgVisible ? 1 : 0,
               transform: imgVisible ? 'translateX(0)' : 'translateX(-60px)',
             }}
           >
-            <div className="rounded-3xl w-full h-[500px] overflow-hidden shadow-xl">
+            <div className="rounded-3xl w-full h-[280px] md:h-[500px] overflow-hidden shadow-xl">
               <img
                 src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=1200&auto=format&fit=crop"
                 alt="Interiorul Vibe Caffè"
@@ -64,7 +64,7 @@ export default function AboutStarter() {
             <p className="text-amber-700 font-semibold text-lg mb-3 uppercase tracking-wider">
               Povestea noastră
             </p>
-            <h2 className="text-5xl font-bold text-gray-900 mb-8">
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-8">
               Mai mult decât o cafea
             </h2>
 
@@ -84,7 +84,7 @@ export default function AboutStarter() {
             <div className="grid grid-cols-3 gap-6 mt-10 pt-10 border-t border-gray-100">
               {[
                 { value: '5k+', label: 'Studenți mulțumiți' },
-                { value: '12+', label: 'Sortimente de cafea' },
+                { value: '38+', label: 'Băuturi în meniu' },
                 { value: '4.9★', label: 'Rating Google' },
               ].map((stat, i) => (
                 <div
